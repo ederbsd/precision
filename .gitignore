@@ -1,0 +1,10 @@
+build
+*.tmp
+*.bak
+*.sw
+*~
+*.o
+*.lo
+.deps
+.libs
+

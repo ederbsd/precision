@@ -1,2 +1,5 @@
-# precision
- C++ Library for Geometric Precision
+## Synopsis
+
+**Precision** C++ Library for Geometric Precision
+
+
