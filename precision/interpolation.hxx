@@ -4,6 +4,7 @@
 
 #include <cmath>
 #include <vector>
+#include <cassert>
 
 namespace precision {
   /**
@@ -27,7 +28,7 @@ namespace precision {
   _PCS_IMAGE linear( _PCS_DOMAIN x0, _PCS_IMAGE y0, _PCS_DOMAIN x1,
                      _PCS_IMAGE y1,  _PCS_DOMAIN x )
   {
-    PCS_ASSERT( x1 != x0 );
+    assert( x1 != x0 );
 
     _PCS_IMAGE delta, result, offset;
 
@@ -62,9 +63,9 @@ namespace precision {
                        std::vector<_PCS_IMAGE>& f,
                        _PCS_DOMAIN_X x, _PCS_DOMAIN_Y y )
   {
-    PCS_ASSERT( dx.size() >= 4 );
-    PCS_ASSERT( dy.size() >= 4 );
-    PCS_ASSERT( f.size()  >= 4 );
+    assert( dx.size() >= 4 );
+    assert( dy.size() >= 4 );
+    assert( f.size()  >= 4 );
     _PCS_IMAGE z[ 2 ], result;
 
     z[0]   = linear( dx[ 0 ], f[ 0 ], dx[ 1 ], f[ 1 ], x );
@@ -135,8 +136,8 @@ namespace precision {
   {
     _PCS_IMAGE p0, p1, p2, p3;
 
-    PCS_ASSERT( dx.size() > 3 );
-    PCS_ASSERT( dx.size() == im.size() );
+    assert( dx.size() > 3 );
+    assert( dx.size() == im.size() );
 
     p0 = im[ 0 ] * (x - dx[ 1 ]) / (dx[ 0 ] - dx[ 1 ]);
     p1 = im[ 1 ] * (x - dx[ 0 ]) / (dx[ 1 ] - dx[ 0 ]);
@@ -288,22 +289,22 @@ namespace precision {
   _PCS_IMAGE bicubic( std::vector<_PCS_DOMAIN>dx, std::vector<_PCS_DOMAIN>dy,
                       std::vector<_PCS_IMAGE>f, _PCS_DOMAIN x, _PCS_DOMAIN y )
   {
-    PCS_ASSERT( dx.size() == 16 );
-    PCS_ASSERT( dy.size() == 16 );
-    PCS_ASSERT( f.size()  == 16 );
+    assert( dx.size() == 16 );
+    assert( dy.size() == 16 );
+    assert( f.size()  == 16 );
 
     _PCS_DOMAIN distancex, distancey, horizontal[ 4 ];
 
     for( int i = 0; i < 4; i++ ) {
-      PCS_ASSERT( x >= dx[ 4 * i + 1 ] );
-      PCS_ASSERT( x <= dx[ 4 * i + 2 ] );
+      assert( x >= dx[ 4 * i + 1 ] );
+      assert( x <= dx[ 4 * i + 2 ] );
 
       distancex = (x - dx[4 * i + 2]) / (dx[4 * i + 3] - dx[4 * i + 2]);
       horizontal[ i ] = cubic( distancex, f[ 4 * i ], f[ 4 * i + 1 ],
                                f[ 4 * i + 2 ], f[ 4 * i + 3 ] );
 
-      PCS_ASSERT( y >= dy[ i + 4 ] );
-      PCS_ASSERT( y <= dy[ i + 8 ] );
+      assert( y >= dy[ i + 4 ] );
+      assert( y <= dy[ i + 8 ] );
     }
 
     distancey = (y - dy[ 5 ]) / (dy[ 9 ] - dy[ 5 ]);
@@ -368,14 +369,14 @@ namespace precision {
                       _PCS_IMAGE f13, _PCS_IMAGE f14, _PCS_IMAGE f15, _PCS_IMAGE f16,
                       _PCS_DOMAIN x, _PCS_DOMAIN y )
   {
-    PCS_ASSERT( x > xo );
-    PCS_ASSERT( x < xf );
+    assert( x > xo );
+    assert( x < xf );
 
     _PCS_DOMAIN distancex, distancey, horizontal[ 4 ], delta;
 
     delta = (xf - xo) / 3.;
-    PCS_ASSERT( x >= xo + delta );
-    PCS_ASSERT( x <= xo + delta + delta );
+    assert( x >= xo + delta );
+    assert( x <= xo + delta + delta );
 
     distancex = (x - (xo + delta)) / delta;
     horizontal[ 0 ] = cubic( distancex, f1,  f2,  f3,  f4  );
@@ -384,8 +385,8 @@ namespace precision {
     horizontal[ 3 ] = cubic( distancex, f13, f14, f15, f16 );
 
     delta = (yf - yo) / 3.;
-    PCS_ASSERT( y >= yo + delta );
-    PCS_ASSERT( y <= yo + delta + delta );
+    assert( y >= yo + delta );
+    assert( y <= yo + delta + delta );
 
     distancey = (y - (yo + delta)) / delta;
     return( cubic( distancey, horizontal[ 0 ], horizontal[ 1 ],
